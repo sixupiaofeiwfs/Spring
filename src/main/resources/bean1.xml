@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+                           http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+
+<!--通过set方法注入属性  name=张三-->
+    <bean id="student" class="com.wfs.pojo.Student"  init-method="init" destroy-method="destory">
+        <property name="name" value="张三"></property>
+    </bean>
+
+    <!--通过有参构造的方式注入属性值-->
+    <bean id="grade" class="com.wfs.pojo.Grade">
+        <constructor-arg name="name" value="一班"></constructor-arg>
+        <constructor-arg name="count" value="2"></constructor-arg>
+    </bean>
+
+    <!--注入null 或 特殊符号-->
+    <bean id="dog" class="com.wfs.pojo.Dog">
+        <property name="age">
+            <null/>
+        </property>
+        <property name="name">
+            <value><![CDATA[<<贝贝>>]]></value>
+        </property>
+
+    </bean>
+
+
+
+    <!--演示引用外部bean   service层引用dao层-->
+    <bean id="dogservice" class="com.wfs.service.DogService">
+        <property name="dogDao" ref="dogdao"></property>
+    </bean>
+    <bean id="dogdao" class="com.wfs.com.wfs.dao.DogDao">
+
+    </bean>
+
+
+
+
+    <!--演示内部bean-->
+    <bean id="emp" class="com.wfs.pojo.Emp">
+        <property name="name" value="王五"></property>
+        <property name="dept">
+            <bean id="dept" class="com.wfs.pojo.Dept">
+                <property name="name" value="技术部"></property>
+             </bean>
+        </property>
+    </bean>
+
+    <!--演示注入array list map类属性-->
+    <bean id="car" class="com.wfs.pojo.Car">
+        <property name="array">
+            <array>
+                <value>帝豪</value>
+                <value>领克</value>
+            </array>
+        </property>
+        <property name="list">
+            <list>
+                <value>红旗</value>
+                <value>奔腾</value>
+            </list>
+        </property>
+        <property name="map">
+            <map>
+                <entry key="name1" value="大众"></entry>
+                <entry key="name2" value="奥迪"></entry>
+            </map>
+        </property>
+        <property name="lists">
+            <list>
+                <ref bean="wheel1"></ref>
+                <ref bean="wheel2"></ref>
+            </list>
+        </property>
+
+
+    </bean>
+
+
+    <bean id="wheel1" class="com.wfs.pojo.Wheel">
+        <property name="name" value="前轮"></property>
+    </bean>
+    <bean id="wheel2" class="com.wfs.pojo.Wheel">
+        <property name="name" value="后轮"></property>
+    </bean>
+
+
+
+
+    <!--自动装配-->
+    <bean id="glass" class="com.wfs.pojo.Glass" autowire="byType">
+    </bean>
+    <bean id="lid" class="com.wfs.pojo.Lid"></bean>
+
+
+
+
+    <!--注解之前的扫描-->
+    <context:component-scan base-package="com.wfs" ></context:component-scan>
+</beans>
